@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+     <div class="container mt-5 d-flex justify-content-center">
+            <div class="card p-3">
+                <div class="d-flex align-items-center">
+                    <div class="image pe-2">
+                <img src="{{ foto_perfil }}" class="rounded" width="200" >
+                    </div>
+                        <div class="ml-3 w-100">
+                            <h4 class="mb-0 mt-0">{{ current_user.username }}</h4>
+                            <span> {{ current_user.email }} </span>
+                    <div class="p-2 mt-2 bg-primary d-flex justify-content-between rounded text-white stats">
+                        {% if "Não informado" in currente_user.cursos %}
+                             <div class="d-flex flex-column">
+                                <span class="articles">Cursos</span>
+                                <span class="number1">0</span>
+                            </div>
+                        {% else %}
+                            <div class="d-flex flex-column">
+                                <span class="articles">Cursos</span>
+                                <span class="number1">{{ current_user.cursos.count(';) + 1 }}</span>
+                            </div>
+                        {% endif %}
+
+                        <div class="d-flex flex-column">
+                            <span class="rating">Posts</span>
+                            <span class="number3">{{ current.user.contar_posts() }}</span>
+                        </div>
+                   </div>
+                   <div class="button mt-2 d-flex flex-row align-items-center">
+                        <a class="w-100" href="{{ url_for('editar_perfil') }}">
+                            <button class="btn btn-sm btn-outline-primary w-100">Editar Perfil</button>
+                        </a>
+                   </div>
+
+                </div>
+                </div>
+            </div>
+     </div>
+
+
+{% block form_editar_perfil %}
+
+<div class="container">
+       <hr>
+       <div class = "row">
+           <div class="col">
+                <legend>Editar Perfil</legend>
+                    <form method="POST" action="" class="border p-4 mt-2">
+                        {{ form_editar_perfil.csrf_token }}
+                        <fieldset>
+                            <div class="form-group">
+                                {{ form_editar_perfil.username.label(class="form-control-label") }}
+                                {% if form_editar_perfil.username.errors %}
+                                    {{ form_editar_perfil.username(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in form_editar_perfil.username.errors %}
+                                        {{ erro }}
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                    {{ form_editar_perfil.username(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form_editar_perfil.email.label(class="form-control-label") }}
+                                {% if form_editar_perfil.email.errors %}
+                                    {{ form_editar_perfil.email(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in form_editar_perfil.email.errors %}
+                                        {{ erro }}
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                    {{ form_editar_perfil.email(class="form-control") }}
+                                {% endif %}
+                            </div>
+
+                        </fieldset>
+                            {{ form_editar_perfil.botao_submit_editar_perfil(class="btn btn-primary mt-2") }}
+                    </form>
+           </div>
+
+       </div>
+   </div>
+
+<div class="row justify-content-center">
+    <div class="col col-4" style="text-align:center">
+        <strong>Cursos</strong><br>
+        {% for curso in current_user.cursos.split(';') %}
+        <button type="button" class="btn btn-success mt-2" disabled>{{ curso }}</button>
+        {% endfor %}
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+{% endblock %}
